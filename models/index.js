@@ -6,50 +6,35 @@ const ProductTag = require('./ProductTag');
 
 // Products belongsTo Category
 Product.belongsTo(Category, {
-  // Define the third table needed to store the foreign keys
-  through: {
-    model: ProductTag,
-    unique: false
-  },
-  // Define an alias for when data is retrieved
-  as: 'dunno1'
-});
+  foreignKey: 'category_id'
+  }
+);
 
 // Categories have many Products
-Category.belongsTo(Product, {
+Category.hasMany(Product, {
   // Define the third table needed to store the foreign keys
-  through: {
-    model: ProductTag,
-    unique: false
-  },
-  // Define an alias for when data is retrieved
-  as: 'dunno1'
-});
+  foreignKey: 'category_id',
+  onDelete: 'SET NULL'
+  }
+);
 
 // Products belongToMany Tags (through ProductTag)
-// Products belongsTo Category
-Product.hasMany(Tag, {
+Product.belongsToMany(Tag, {
   // Define the third table needed to store the foreign keys
-  through: {
-    model: Tag,
-    unique: false
-  },
-  // Define an alias for when data is retrieved
-  as: 'dunno2'
-});
-
+  through: ProductTag,
+  foreignKey: 'product_id'
+  }
+);
 
 // Tags belongToMany Products (through ProductTag)
-// Products belongsTo Category
-Tag.hasMany(Product, {
+Tag.belongsToMany(Product, {
   // Define the third table needed to store the foreign keys
   through: {
-    model: Tag,
-    unique: false
-  },
-  // Define an alias for when data is retrieved
-  as: 'dunno2'
-});
+    ProductTag,
+    foreignKey: 'tag_id'
+    }
+  }
+);
 
 module.exports = {
   Product,
@@ -66,7 +51,7 @@ Product.belongsToMany(Category, {
     model: product,
   },
   // Define an alias for when data is retrieved
-  as: 'dunno'
+  as: ''
 });
 
 // Categories have many Products
@@ -76,6 +61,6 @@ Category.belongsToMany(Product, {
     model: product,
   },
   // Define an alias for when data is retrieved
-  as: 'dunno_again'
+  as: ''
 });
 */
